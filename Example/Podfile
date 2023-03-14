@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '10.0'
+
+target 'Jonglamofire_Example' do
+  pod 'Jonglamofire', :path => '../'
+
+  target 'Jonglamofire_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
