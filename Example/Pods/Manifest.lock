@@ -1,0 +1,16 @@
+PODS:
+  - Jonglamofire (0.1.0)
+
+DEPENDENCIES:
+  - Jonglamofire (from `../`)
+
+EXTERNAL SOURCES:
+  Jonglamofire:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Jonglamofire: 595b9d821c532ecafd2859e27710b1453f50dbbf
+
+PODFILE CHECKSUM: 35c1790a6560bce49c0bc990a96c49a21edf4e9e
+
+COCOAPODS: 1.11.2

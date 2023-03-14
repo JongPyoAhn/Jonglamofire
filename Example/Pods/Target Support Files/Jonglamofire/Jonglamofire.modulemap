@@ -1,0 +1,6 @@
+framework module Jonglamofire {
+  umbrella header "Jonglamofire-umbrella.h"
+
+  export *
+  module * { export * }
+}

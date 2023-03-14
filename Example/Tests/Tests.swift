@@ -1,5 +1,5 @@
 import XCTest
-import Jonglamofire
+//import Jonglamofire
 
 class Tests: XCTestCase {
     

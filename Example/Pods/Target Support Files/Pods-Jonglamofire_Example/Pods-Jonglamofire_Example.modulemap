@@ -1,0 +1,6 @@
+framework module Pods_Jonglamofire_Example {
+  umbrella header "Pods-Jonglamofire_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

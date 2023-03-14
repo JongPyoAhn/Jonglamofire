@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Jonglamofire'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of Jonglamofire.'
+  s.version          = '0.1.1'
+  s.summary          = 'Alamofire를 모방한 네트워킹을 돕는 라이브러리 입니다'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -21,17 +21,17 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/whdvy95/Jonglamofire'
+  s.homepage         = 'https://github.com/JongPyoAhn/Jonglamofire'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'whdvy95' => 'whdvy95@gmail.com' }
-  s.source           = { :git => 'https://github.com/whdvy95/Jonglamofire.git', :tag => s.version.to_s }
+  s.author           = { 'JongPyoAhn' => 'whdvy95@gmail.com' }
+  s.source           = { :git => 'https://github.com/JongPyoAhn/Jonglamofire.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '10.0'
 
   s.source_files = 'Jonglamofire/Classes/**/*'
-  
+  s.swift_versions = '5.0'
   # s.resource_bundles = {
   #   'Jonglamofire' => ['Jonglamofire/Assets/*.png']
   # }
