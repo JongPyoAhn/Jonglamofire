@@ -47,5 +47,18 @@ open class Session{
         //finishRequestsForDeinit()
         session.invalidateAndCancel()
     }
+    struct RequestConvertible: URLRequestConvertible{
+        let url: URLConvertible
+        let method: String
+        
+        func asURLRequest() throws -> URLRequest {
+            var request = try URLRequest(url: url, method: method)
+            return request
+        }
+    }
+
+    
 }
+
+
 
