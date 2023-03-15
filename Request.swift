@@ -41,6 +41,8 @@ public class DataRequest: Request{
     )
     {
         self.convertible = convertible
+        
+        super.init(id: id, underlyingQueue: underlyingQueue, serializationQueue: serializationQueue)
     }
 
 }

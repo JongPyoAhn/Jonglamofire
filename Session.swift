@@ -52,18 +52,54 @@ open class Session{
         let method: String
         
         func asURLRequest() throws -> URLRequest {
-            var request = try URLRequest(url: url, method: method)
+            let request = try URLRequest(url: url, method: method)
             return request
         }
     }
     
-    open func reqeust
-    (
-        _ convertible: URLRequestConvertible
-    )
+    open func reqeust(_ convertible: URLRequestConvertible)
     {
-        let request = 
+        let request = DataRequest(
+            convertible: convertible,
+            underlyingQueue: rootQueue,
+            serializationQueue: serializationQueue
+        )
     }
+    
+    //MARK: -perform
+    func perform(_ request: Request)
+    {
+        rootQueue.async {
+            self.requestQueue.async{
+                
+            }
+        }
+    }
+    
+    func performDataRequest(_ request: DataRequest){
+        dispatchPrecondition(condition: .onQueue(requestQueue))
+//      performSetupOperations()
+    }
+    
+    func performSetupOperations(for request: Request,
+                                convertible: URLRequestConvertible){
+        dispatchPrecondition(condition: .onQueue(requestQueue))
+        
+        let initialRequest: URLRequest
+        
+        do {
+            initialRequest = try convertible.asURLRequest()
+        } catch {
+            //request의 작성이 실패했을 때 처리
+            return
+        }
+
+    }
+    
+    
+    
+    //MARK: - Adapter
+    
     
 }
 
