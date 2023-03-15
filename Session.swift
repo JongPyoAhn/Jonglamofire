@@ -56,7 +56,14 @@ open class Session{
             return request
         }
     }
-
+    
+    open func reqeust
+    (
+        _ convertible: URLRequestConvertible
+    )
+    {
+        let request = 
+    }
     
 }
 

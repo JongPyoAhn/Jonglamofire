@@ -15,6 +15,7 @@
 		538E28BB29C194870049F696 /* JonglamofireExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E28BA29C194870049F696 /* JonglamofireExtended.swift */; };
 		538E28BD29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E28BC29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift */; };
 		538E28BF29C1BAD60049F696 /* URLConvertible+URLRequestConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E28BE29C1BAD50049F696 /* URLConvertible+URLRequestConvertible.swift */; };
+		538E28C129C1DE860049F696 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E28C029C1DE860049F696 /* Request.swift */; };
 		53E5584229C062CE000C4062 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E5584129C062CE000C4062 /* Session.swift */; };
 		8400FE9551488C8272DE2196C9505A32 /* Jonglamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1053938B1C0BE5D4A9DA79866AF3A5EA /* Jonglamofire.swift */; };
 		99B4F4F66247A8A6B86F76C121AF4AB6 /* Jonglamofire-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 40BF65E98F2F38CA89BB3F85DCB92F0D /* Jonglamofire-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -60,6 +61,7 @@
 		538E28BA29C194870049F696 /* JonglamofireExtended.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JonglamofireExtended.swift; sourceTree = "<group>"; };
 		538E28BC29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionConfiguration+Jonglamofire.swift"; sourceTree = "<group>"; };
 		538E28BE29C1BAD50049F696 /* URLConvertible+URLRequestConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLConvertible+URLRequestConvertible.swift"; sourceTree = "<group>"; };
+		538E28C029C1DE860049F696 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		53CD4472F0F5CF7CEE9B7D6ED9F964CA /* Pods-Jonglamofire_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Jonglamofire_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		53E5584129C062CE000C4062 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		567C6F6E7F166D6170C3C9F332F364E1 /* Jonglamofire.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Jonglamofire.debug.xcconfig; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				538E28BA29C194870049F696 /* JonglamofireExtended.swift */,
 				538E28BC29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift */,
 				538E28BE29C1BAD50049F696 /* URLConvertible+URLRequestConvertible.swift */,
+				538E28C029C1DE860049F696 /* Request.swift */,
 				BA64429098EDCC11762E552F55E191EF /* Pod */,
 				7B26533CEC46A7B02065A4B563CE07AC /* Support Files */,
 			);
@@ -391,6 +394,7 @@
 				538E28BF29C1BAD60049F696 /* URLConvertible+URLRequestConvertible.swift in Sources */,
 				538E28BD29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift in Sources */,
 				8400FE9551488C8272DE2196C9505A32 /* Jonglamofire.swift in Sources */,
+				538E28C129C1DE860049F696 /* Request.swift in Sources */,
 				53E5584229C062CE000C4062 /* Session.swift in Sources */,
 				538E28BB29C194870049F696 /* JonglamofireExtended.swift in Sources */,
 			);
