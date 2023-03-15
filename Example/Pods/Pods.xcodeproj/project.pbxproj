@@ -12,6 +12,9 @@
 		2B4FBE0F5D229EC421A6AD1B19151D89 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
 		2E673BB48895F27358823475D0C34237 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
 		40E0C7750070D5A5FD50E1BC5596F874 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		538E28BB29C194870049F696 /* JonglamofireExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E28BA29C194870049F696 /* JonglamofireExtended.swift */; };
+		538E28BD29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E28BC29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift */; };
+		53E5584229C062CE000C4062 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E5584129C062CE000C4062 /* Session.swift */; };
 		8400FE9551488C8272DE2196C9505A32 /* Jonglamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1053938B1C0BE5D4A9DA79866AF3A5EA /* Jonglamofire.swift */; };
 		99B4F4F66247A8A6B86F76C121AF4AB6 /* Jonglamofire-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 40BF65E98F2F38CA89BB3F85DCB92F0D /* Jonglamofire-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AD25DB64E17FE2FB7289D02C739466A4 /* Jonglamofire-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A448B308A7C11D30CD733C3478E51C /* Jonglamofire-dummy.m */; };
@@ -53,7 +56,10 @@
 		3E339EEA1AA84594C58C156881F68D50 /* Pods-Jonglamofire_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Jonglamofire_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		40BF65E98F2F38CA89BB3F85DCB92F0D /* Jonglamofire-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Jonglamofire-umbrella.h"; sourceTree = "<group>"; };
 		42C78B0878C2C8F84D60920310A09D21 /* Pods-Jonglamofire_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Jonglamofire_Example.release.xcconfig"; sourceTree = "<group>"; };
+		538E28BA29C194870049F696 /* JonglamofireExtended.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JonglamofireExtended.swift; sourceTree = "<group>"; };
+		538E28BC29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionConfiguration+Jonglamofire.swift"; sourceTree = "<group>"; };
 		53CD4472F0F5CF7CEE9B7D6ED9F964CA /* Pods-Jonglamofire_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Jonglamofire_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		53E5584129C062CE000C4062 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		567C6F6E7F166D6170C3C9F332F364E1 /* Jonglamofire.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Jonglamofire.debug.xcconfig; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		80A448B308A7C11D30CD733C3478E51C /* Jonglamofire-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Jonglamofire-dummy.m"; sourceTree = "<group>"; };
@@ -162,6 +168,9 @@
 			isa = PBXGroup;
 			children = (
 				1053938B1C0BE5D4A9DA79866AF3A5EA /* Jonglamofire.swift */,
+				53E5584129C062CE000C4062 /* Session.swift */,
+				538E28BA29C194870049F696 /* JonglamofireExtended.swift */,
+				538E28BC29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift */,
 				BA64429098EDCC11762E552F55E191EF /* Pod */,
 				7B26533CEC46A7B02065A4B563CE07AC /* Support Files */,
 			);
@@ -376,7 +385,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD25DB64E17FE2FB7289D02C739466A4 /* Jonglamofire-dummy.m in Sources */,
+				538E28BD29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift in Sources */,
 				8400FE9551488C8272DE2196C9505A32 /* Jonglamofire.swift in Sources */,
+				53E5584229C062CE000C4062 /* Session.swift in Sources */,
+				538E28BB29C194870049F696 /* JonglamofireExtended.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
