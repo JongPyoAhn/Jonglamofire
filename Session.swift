@@ -22,7 +22,7 @@ open class Session{
     {
         
         precondition(session.configuration.identifier == nil, "Jonglamofire는 백그라운드 URLSessionConfiguration을 지원하지 않습니다. 쓰지마십쇼")
-        precondition(session.delegateQueue.underlyingQueue == rootQueue, "URLSession의 delegateQueue는 rootQueue에서 처리되어야 한다.")
+//        precondition(session.delegateQueue.underlyingQueue == rootQueue, "URLSession의 delegateQueue는 rootQueue에서 처리되어야 한다.")
         self.session = session
         self.rootQueue = rootQueue
         self.requestQueue = requestQueue ?? DispatchQueue(label: "\(rootQueue.label).requestQueue", target: rootQueue)
@@ -57,28 +57,37 @@ open class Session{
         }
     }
     
-    open func reqeust(_ convertible: URLRequestConvertible)
+    open func request(_ convertible: URLConvertible) -> DataRequest{
+        let convertible = RequestConvertible(url: convertible, method: "GET")
+        return request(convertible)
+    }
+    
+    open func request(_ convertible: URLRequestConvertible) -> DataRequest
     {
         let request = DataRequest(
             convertible: convertible,
             underlyingQueue: rootQueue,
             serializationQueue: serializationQueue
         )
+        perform(request)
+        return request
     }
+    
     
     //MARK: -perform
     func perform(_ request: Request)
     {
         rootQueue.async {
             self.requestQueue.async{
-                
+                guard let dataRequest = request as? DataRequest else {return}
+                self.performDataRequest(dataRequest)
             }
         }
     }
     
     func performDataRequest(_ request: DataRequest){
         dispatchPrecondition(condition: .onQueue(requestQueue))
-//      performSetupOperations()
+        performSetupOperations(for: request, convertible: request.convertible)
     }
     
     func performSetupOperations(for request: Request,
