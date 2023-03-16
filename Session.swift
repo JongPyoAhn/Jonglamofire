@@ -85,21 +85,27 @@ open class Session{
                                 convertible: URLRequestConvertible){
         dispatchPrecondition(condition: .onQueue(requestQueue))
         
-        let initialRequest: URLRequest
+        let initialRequest: URLRequest = try! convertible.asURLRequest()
         
-        do {
-            initialRequest = try convertible.asURLRequest()
-        } catch {
-            //request의 작성이 실패했을 때 처리
-            return
+        rootQueue.async {
+            self.didCreateURLRequest(initialRequest, for: request)
         }
 
     }
     
     
-    
-    //MARK: - Adapter
-    
+    func didCreateURLRequest(_ urlRequest: URLRequest, for request: Request){
+        dispatchPrecondition(condition: .onQueue(rootQueue))
+        
+        let task = request.task(for: urlRequest, using: session)
+        updateStatesForTask(task, request: request)
+    }
+
+    func updateStatesForTask(_ task: URLSessionTask, request: Request){
+        dispatchPrecondition(condition: .onQueue(rootQueue))
+        
+        task.resume()
+    }
     
 }
 

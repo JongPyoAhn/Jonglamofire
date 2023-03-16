@@ -26,6 +26,9 @@ public class Request{
         self.underlyingQueue = underlyingQueue
         self.serializationQueue = serializationQueue
     }
+    func task(for request: URLRequest, using session: URLSession) -> URLSessionTask{
+        fatalError("반드시 서브클래싱해야됨")
+    }
 }
 
 //MARK: -
@@ -43,6 +46,11 @@ public class DataRequest: Request{
         self.convertible = convertible
         
         super.init(id: id, underlyingQueue: underlyingQueue, serializationQueue: serializationQueue)
+    }
+    
+    override func task(for request: URLRequest, using session: URLSession) -> URLSessionTask {
+        let copiedRequest = request
+        return session.dataTask(with: copiedRequest)
     }
 
 }
