@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Jonglamofire'
-  s.version          = '0.1.1'
+  s.version          = '0.1.2'
   s.summary          = 'Alamofire를 모방한 네트워킹을 돕는 라이브러리 입니다'
 
 # This description is used to generate tags and improve search results.
