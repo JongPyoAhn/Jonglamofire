@@ -43,7 +43,7 @@
 
 /* Begin PBXFileReference section */
 		03AA8C3F4802C6413B63C89200B5CEC6 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		1053938B1C0BE5D4A9DA79866AF3A5EA /* Jonglamofire.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Jonglamofire.swift; path = Jonglamofire/Classes/Jonglamofire.swift; sourceTree = "<group>"; };
+		1053938B1C0BE5D4A9DA79866AF3A5EA /* Jonglamofire.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Jonglamofire.swift; sourceTree = "<group>"; };
 		12ADBC9071F402F91AE283CCC86798B4 /* Pods-Jonglamofire_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Jonglamofire_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		146A3A7CDB16D6A4D4FEA159E54CA57A /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		157329E9B945662848A5E8F645805C4E /* Jonglamofire.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Jonglamofire.release.xcconfig; sourceTree = "<group>"; };
@@ -145,6 +145,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		530C3A1029C34A65005BF200 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				1053938B1C0BE5D4A9DA79866AF3A5EA /* Jonglamofire.swift */,
+				53E5584129C062CE000C4062 /* Session.swift */,
+				538E28BA29C194870049F696 /* JonglamofireExtended.swift */,
+				538E28BC29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift */,
+				538E28BE29C1BAD50049F696 /* URLConvertible+URLRequestConvertible.swift */,
+				538E28C029C1DE860049F696 /* Request.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
 		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -171,12 +184,7 @@
 		873DFB7FB1F4A273966458916FBDA852 /* Jonglamofire */ = {
 			isa = PBXGroup;
 			children = (
-				1053938B1C0BE5D4A9DA79866AF3A5EA /* Jonglamofire.swift */,
-				53E5584129C062CE000C4062 /* Session.swift */,
-				538E28BA29C194870049F696 /* JonglamofireExtended.swift */,
-				538E28BC29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift */,
-				538E28BE29C1BAD50049F696 /* URLConvertible+URLRequestConvertible.swift */,
-				538E28C029C1DE860049F696 /* Request.swift */,
+				530C3A1029C34A65005BF200 /* Sources */,
 				BA64429098EDCC11762E552F55E191EF /* Pod */,
 				7B26533CEC46A7B02065A4B563CE07AC /* Support Files */,
 			);
