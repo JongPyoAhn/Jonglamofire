@@ -11,6 +11,9 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
+## Migration Guides
+- [Jonglamofire 0.1 Migration Guide]
+
 ## Installation
 
 Jonglamofire is available through [CocoaPods](https://cocoapods.org). To install
