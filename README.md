@@ -12,7 +12,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 ## Requirements
 
 ## Migration Guides
-- [Jonglamofire 0.1 Migration Guide]
+- [Jonglamofire 0.1 Migration Guide](https://github.com/JongPyoAhn/Jonglamofire/blob/master/Version/Jonglamofire%200.1%20Migration.md)
 
 ## Installation
 
