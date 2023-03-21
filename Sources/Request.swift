@@ -7,6 +7,23 @@
 
 import Foundation
 public class Request{
+    //네트워크 Request 상태
+    //mutableState를 통해 보호되는 멀티스레드 환경에서 변경될것이다.
+    //Alamofire는 State값을 기반으로 적절한 처리를 수행한다.
+    public enum State {
+        //요청이 초기화되었을 때
+        case initialized
+        //요청이 실행되었을 때
+        case resumed
+        //요청이 일시 중지되었을 때
+        case suspended
+        //요청이 취소되었을 때
+        case cancelled
+        //요청이 완료되었을 때
+        case finished
+    }
+    
+    
     //Request를 위한 unique identifier를 제공하는 UUID
     public let id: UUID
     //모든 내부의 비동기 액션들을 위한 Serial Queue
