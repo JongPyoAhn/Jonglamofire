@@ -22,7 +22,14 @@ public class Request{
         //요청이 완료되었을 때
         case finished
     }
-    
+    //Request의 State를 변경하기위한 구조체
+    //MutableState는 변경될 수 있는 요청의 상태를 추적하고 요청의 현재 상태를 나태낼 수 있는 프로퍼티들을 보유한다.
+    struct MuatbleState{
+        //Request의 상태
+        var state: State = .initialized
+        //Request 객체에서 생성된 모든 URLReuqest들을 추적하고 처리한다.
+        var requests: [URLRequest] = []
+    }
     
     //Request를 위한 unique identifier를 제공하는 UUID
     public let id: UUID
