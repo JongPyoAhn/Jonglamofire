@@ -31,6 +31,29 @@ public class Request{
         var requests: [URLRequest] = []
     }
     
+    @Protected
+    fileprivate var mutableState = MuatbleState()
+    
+    func didCreadteInitialURLRequest(_ request: URLRequest){
+        dispatchPrecondition(condition: .onQueue(underlyingQueue))
+        
+        $mutableState.write { $0.requests.append(request) }
+    }
+    
+    func withState(perform: (State) -> Void){
+        //멀티스레드 환경에서 state값을 안전하게 읽기위한 함수
+        $mutableState.withState(perform: perform)
+    }
+    
+    func didCreateURLRequest(_ request: URLRequest){
+        dispatchPrecondition(condition: .onQueue(underlyingQueue))
+        
+        $mutableState.read { state in
+            
+        }
+    }
+    
+    
     //Request를 위한 unique identifier를 제공하는 UUID
     public let id: UUID
     //모든 내부의 비동기 액션들을 위한 Serial Queue

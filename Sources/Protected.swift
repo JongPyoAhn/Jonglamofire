@@ -77,7 +77,7 @@ final class Protected<T>{
     init(wrappedValue: T){
         value = wrappedValue
     }
-    
+    //읽기와 쓰기메소드가 상당히 비슷한데 차이점: 읽기는 closure를 통해 mutableState에 접근할 수 있고, 쓰기는 inout을 통해 실제값을 쓸 수 있다.
     //T객체에 대한 읽기작업을 수행한다.
     //T객체를 보호하고 여러스레드에서 동시에 접근해도 안전하게 읽을 수 있도록 한다.
     func read<U>(_ closure: (T) throws -> U) rethrows -> U {
@@ -100,5 +100,11 @@ final class Protected<T>{
     
     subscript<Property>(dynamicMember keyPath: KeyPath<T, Property>) -> Property{
         get{ lock.around { value[keyPath: keyPath] } }
+    }
+}
+extension Protected where T == Request.MuatbleState{
+    //State값을 멀티스레드 환경에서 안전하게 "읽기"위한 메소드
+    func withState(perform: (Request.State) -> Void){
+        lock.around { perform(value.state) }
     }
 }
