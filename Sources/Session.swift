@@ -95,7 +95,7 @@ open class Session{
         dispatchPrecondition(condition: .onQueue(requestQueue))
         
         let initialRequest: URLRequest = try! convertible.asURLRequest()
-        
+         
         rootQueue.async {
             self.didCreateURLRequest(initialRequest, for: request)
         }
