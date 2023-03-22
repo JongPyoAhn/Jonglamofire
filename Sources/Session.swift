@@ -96,6 +96,8 @@ open class Session{
         
         let initialRequest: URLRequest = try! convertible.asURLRequest()
          
+        rootQueue.async { request.didCreateURLRequest(initialRequest) }
+        
         rootQueue.async {
             self.didCreateURLRequest(initialRequest, for: request)
         }
@@ -113,9 +115,22 @@ open class Session{
     func updateStatesForTask(_ task: URLSessionTask, request: Request){
         dispatchPrecondition(condition: .onQueue(rootQueue))
         
-        task.resume()
+        //멀티스레드 환경에서 state값을 안전하게 읽기위한 함수
+        request.withState { state in
+            print(state)
+            switch state{
+            case .initialized, .finished:
+                break
+            case .resumed:
+                task.resume()
+            case .suspended:
+                task.suspend()
+            case .cancelled:
+                task.resume()
+                task.cancel()
+            }
+        }
     }
-    
 }
 
 

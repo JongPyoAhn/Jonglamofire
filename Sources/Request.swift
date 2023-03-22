@@ -21,6 +21,21 @@ public class Request{
         case cancelled
         //요청이 완료되었을 때
         case finished
+        
+        func canTransitionTo(_ state: State) -> Bool {
+            switch (self, state) {
+            case (.initialized, _):
+                return true
+            case (_, .initialized), (.cancelled, _), (.finished, _):
+                return false
+            case (.resumed, .cancelled), (.suspended, .cancelled), (.resumed, .suspended), (.suspended, .resumed):
+                return true
+            case (.suspended, .suspended), (.resumed, .resumed):
+                return false
+            case (_, .finished):
+                return true
+            }
+        }
     }
     //Request의 State를 변경하기위한 구조체
     //MutableState는 변경될 수 있는 요청의 상태를 추적하고 요청의 현재 상태를 나태낼 수 있는 프로퍼티들을 보유한다.
@@ -29,6 +44,11 @@ public class Request{
         var state: State = .initialized
         //Request 객체에서 생성된 모든 URLReuqest들을 추적하고 처리한다.
         var requests: [URLRequest] = []
+        //Request가 URLRequest를 생성할 때 호출되는 closure와 해당 closure가 실행되는 DispatchQueue를 저장합니다.
+        var urlRequestHandler: (queue: DispatchQueue, handler: (URLRequest) -> Void)?
+        //네트워크 요청을 처리하는데 사용되는 핸들러중 하나이며, 요청의 작동, 요청헤더, 바디를 쉽게확인할 수 있어서 디버깅에 유용하다.
+        //네트워크 요청을 처리할 때 cURL명령어로 변환하여 저장
+        var cURLHandler: (queue: DispatchQueue, handler: (String) -> Void)?
     }
     
     @Protected
@@ -47,11 +67,18 @@ public class Request{
     
     func didCreateURLRequest(_ request: URLRequest){
         dispatchPrecondition(condition: .onQueue(underlyingQueue))
-        
+        //
         $mutableState.read { state in
-            
+            //비동기로 처리하여 메인스레드가 블로킹되지 않게함
+            state.urlRequestHandler?.queue.async {state.urlRequestHandler?.handler(request)}
         }
     }
+    
+    
+//    내가 생각했을 때 아직까지는 필요성을 느낄 수 없는 기능(필요하다고 생각 시 작성)
+//    private func callCURLHandlerIfNecessary(){
+//
+//    }
     
     
     //Request를 위한 unique identifier를 제공하는 UUID
