@@ -21,7 +21,7 @@ public class Request{
         case cancelled
         //요청이 완료되었을 때
         case finished
-        
+        //원하는 상태로 변경할 수 있는지 확인하는 함수
         func canTransitionTo(_ state: State) -> Bool {
             switch (self, state) {
             case (.initialized, _):
@@ -49,6 +49,8 @@ public class Request{
         //네트워크 요청을 처리하는데 사용되는 핸들러중 하나이며, 요청의 작동, 요청헤더, 바디를 쉽게확인할 수 있어서 디버깅에 유용하다.
         //네트워크 요청을 처리할 때 cURL명령어로 변환하여 저장
         var cURLHandler: (queue: DispatchQueue, handler: (String) -> Void)?
+        //모든 URLSessionTask들을 저장
+        var tasks: [URLSessionTask] = []
     }
     
     @Protected
@@ -73,13 +75,20 @@ public class Request{
             state.urlRequestHandler?.queue.async {state.urlRequestHandler?.handler(request)}
         }
     }
-    
-    
-//    내가 생각했을 때 아직까지는 필요성을 느낄 수 없는 기능(필요하다고 생각 시 작성)
-//    private func callCURLHandlerIfNecessary(){
-//
-//    }
-    
+    @discardableResult
+    public func resume() -> Self{
+        $mutableState.write { mutableState in
+            //상태를 resume으로 변경가능한지 확인
+            guard mutableState.state.canTransitionTo(.resumed) else {return}
+            //상태 변경
+            mutableState.state = .resumed
+            //현재 진행중인 request를 resume()하는거니까 task의 가장 마지막에 추가된게 확실하고, task가 완수된 상태면 그만하는게 맞다.
+            guard let task = mutableState.tasks.last, task.state != .completed else {return}
+            task.resume()
+        }
+        return self
+    }
+  
     
     //Request를 위한 unique identifier를 제공하는 UUID
     public let id: UUID

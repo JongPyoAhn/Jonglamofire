@@ -101,7 +101,6 @@ open class Session{
         rootQueue.async {
             self.didCreateURLRequest(initialRequest, for: request)
         }
-
     }
     
     
