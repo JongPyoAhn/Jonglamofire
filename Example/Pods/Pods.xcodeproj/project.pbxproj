@@ -15,6 +15,7 @@
 		53801D4729D2ECF900D332CC /* Result+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53801D4629D2ECF900D332CC /* Result+Alamofire.swift */; };
 		53801D4929D2ED9A00D332CC /* AFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53801D4829D2ED9A00D332CC /* AFError.swift */; };
 		53801D4B29D2F22700D332CC /* ResponseSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53801D4A29D2F22700D332CC /* ResponseSerialization.swift */; };
+		53801D4D29D2F2B500D332CC /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53801D4C29D2F2B500D332CC /* Response.swift */; };
 		538E28BB29C194870049F696 /* JonglamofireExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E28BA29C194870049F696 /* JonglamofireExtended.swift */; };
 		538E28BD29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E28BC29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift */; };
 		538E28BF29C1BAD60049F696 /* URLConvertible+URLRequestConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E28BE29C1BAD50049F696 /* URLConvertible+URLRequestConvertible.swift */; };
@@ -65,6 +66,7 @@
 		53801D4629D2ECF900D332CC /* Result+Alamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+Alamofire.swift"; sourceTree = "<group>"; };
 		53801D4829D2ED9A00D332CC /* AFError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AFError.swift; sourceTree = "<group>"; };
 		53801D4A29D2F22700D332CC /* ResponseSerialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseSerialization.swift; sourceTree = "<group>"; };
+		53801D4C29D2F2B500D332CC /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		538E28BA29C194870049F696 /* JonglamofireExtended.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JonglamofireExtended.swift; sourceTree = "<group>"; };
 		538E28BC29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionConfiguration+Jonglamofire.swift"; sourceTree = "<group>"; };
 		538E28BE29C1BAD50049F696 /* URLConvertible+URLRequestConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLConvertible+URLRequestConvertible.swift"; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				53801D4629D2ECF900D332CC /* Result+Alamofire.swift */,
 				53801D4829D2ED9A00D332CC /* AFError.swift */,
 				53801D4A29D2F22700D332CC /* ResponseSerialization.swift */,
+				53801D4C29D2F2B500D332CC /* Response.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -414,6 +417,7 @@
 				538E28BF29C1BAD60049F696 /* URLConvertible+URLRequestConvertible.swift in Sources */,
 				53801D4729D2ECF900D332CC /* Result+Alamofire.swift in Sources */,
 				538E28BD29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift in Sources */,
+				53801D4D29D2F2B500D332CC /* Response.swift in Sources */,
 				8400FE9551488C8272DE2196C9505A32 /* Jonglamofire.swift in Sources */,
 				53C64CD829C99A7400A2CBF5 /* Protected.swift in Sources */,
 				538E28C129C1DE860049F696 /* Request.swift in Sources */,
