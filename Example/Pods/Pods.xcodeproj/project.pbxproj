@@ -14,6 +14,7 @@
 		40E0C7750070D5A5FD50E1BC5596F874 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
 		53801D4729D2ECF900D332CC /* Result+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53801D4629D2ECF900D332CC /* Result+Alamofire.swift */; };
 		53801D4929D2ED9A00D332CC /* AFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53801D4829D2ED9A00D332CC /* AFError.swift */; };
+		53801D4B29D2F22700D332CC /* ResponseSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53801D4A29D2F22700D332CC /* ResponseSerialization.swift */; };
 		538E28BB29C194870049F696 /* JonglamofireExtended.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E28BA29C194870049F696 /* JonglamofireExtended.swift */; };
 		538E28BD29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E28BC29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift */; };
 		538E28BF29C1BAD60049F696 /* URLConvertible+URLRequestConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E28BE29C1BAD50049F696 /* URLConvertible+URLRequestConvertible.swift */; };
@@ -63,6 +64,7 @@
 		42C78B0878C2C8F84D60920310A09D21 /* Pods-Jonglamofire_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Jonglamofire_Example.release.xcconfig"; sourceTree = "<group>"; };
 		53801D4629D2ECF900D332CC /* Result+Alamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+Alamofire.swift"; sourceTree = "<group>"; };
 		53801D4829D2ED9A00D332CC /* AFError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AFError.swift; sourceTree = "<group>"; };
+		53801D4A29D2F22700D332CC /* ResponseSerialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseSerialization.swift; sourceTree = "<group>"; };
 		538E28BA29C194870049F696 /* JonglamofireExtended.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JonglamofireExtended.swift; sourceTree = "<group>"; };
 		538E28BC29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionConfiguration+Jonglamofire.swift"; sourceTree = "<group>"; };
 		538E28BE29C1BAD50049F696 /* URLConvertible+URLRequestConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLConvertible+URLRequestConvertible.swift"; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				53C64CD729C99A7400A2CBF5 /* Protected.swift */,
 				53801D4629D2ECF900D332CC /* Result+Alamofire.swift */,
 				53801D4829D2ED9A00D332CC /* AFError.swift */,
+				53801D4A29D2F22700D332CC /* ResponseSerialization.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				53C64CD829C99A7400A2CBF5 /* Protected.swift in Sources */,
 				538E28C129C1DE860049F696 /* Request.swift in Sources */,
 				53801D4929D2ED9A00D332CC /* AFError.swift in Sources */,
+				53801D4B29D2F22700D332CC /* ResponseSerialization.swift in Sources */,
 				53E5584229C062CE000C4062 /* Session.swift in Sources */,
 				538E28BB29C194870049F696 /* JonglamofireExtended.swift in Sources */,
 			);
