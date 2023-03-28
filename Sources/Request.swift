@@ -117,6 +117,12 @@ public class Request{
 //MARK: -
 public class DataRequest: Request{
     public let convertible: URLRequestConvertible
+    //HTTP 요청에 대한 응답 데이터를 저장하는 데 사용됩니다.
+    public var data: Data? {mutableData}
+    
+    //읽기 쓰기가 가능하고 thread-safe하게 접근가능한 mutableData
+    @Protected
+    private var mutableData: Data? = nil
     
     init
     (

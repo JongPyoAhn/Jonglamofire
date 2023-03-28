@@ -152,10 +152,10 @@
 			children = (
 				1053938B1C0BE5D4A9DA79866AF3A5EA /* Jonglamofire.swift */,
 				53E5584129C062CE000C4062 /* Session.swift */,
+				538E28C029C1DE860049F696 /* Request.swift */,
 				538E28BA29C194870049F696 /* JonglamofireExtended.swift */,
 				538E28BC29C1A4010049F696 /* URLSessionConfiguration+Jonglamofire.swift */,
 				538E28BE29C1BAD50049F696 /* URLConvertible+URLRequestConvertible.swift */,
-				538E28C029C1DE860049F696 /* Request.swift */,
 				53C64CD729C99A7400A2CBF5 /* Protected.swift */,
 			);
 			path = Sources;
