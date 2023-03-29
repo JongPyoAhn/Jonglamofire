@@ -13,6 +13,9 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(JF.request("https://jsonplaceholder.typicode.com/posts").response(completionHandler: { response in
+            print(response.data)
+        }))
     }
 
     override func didReceiveMemoryWarning() {

@@ -54,7 +54,7 @@ public class Request{
         //response 파싱하는 Serialization response
         var responseSerializers: [() -> Void] = []
         //responseSerializer과정이 끝낫는지 아닌지를 확인하기 위한 프로퍼티
-        var responseSerializerProcessingFinished = false
+        var responseSerializerProcessingFinished = true
         //response Serialization 완료 시 실행되는 completion Closure. 모든 response Serialization이 완료된 후에 실행된다.
         var responseSerializerCompletions: [() -> Void] = []
         //DataRequest객체가 finish()메서드를 호출하여 요청이 완료되었는지 여부를 나타내는데 사용된다.
@@ -63,6 +63,8 @@ public class Request{
         var finishHandlers: [() -> Void] = []
         //해당 Request에서 최종적으로 발생한 AFError를 의미.
         var error: AFError?
+        //Request가 URLSessionTask 만들 때 불리는 큐와 클로저
+        var urlSessionTaskHandler: (queue: DispatchQueue, handler: (URLSessionTask) -> Void)?
     }
     
     @Protected
@@ -87,6 +89,21 @@ public class Request{
             state.urlRequestHandler?.queue.async {state.urlRequestHandler?.handler(request)}
         }
     }
+    
+    func didCreateTask(_ task: URLSessionTask){
+        dispatchPrecondition(condition: .onQueue(underlyingQueue))
+        
+        $mutableState.write { mutableState in
+            mutableState.tasks.append(task)
+            
+            guard let urlSessionTaskHandler = mutableState.urlSessionTaskHandler else {return}
+            urlSessionTaskHandler.queue.async {
+                urlSessionTaskHandler.handler(task)
+            }
+        }
+    }
+    
+    
     @discardableResult
     public func resume() -> Self{
         $mutableState.write { mutableState in
@@ -146,12 +163,14 @@ public class Request{
     (
         id: UUID,
         underlyingQueue: DispatchQueue,
-        serializationQueue: DispatchQueue
+        serializationQueue: DispatchQueue,
+        delegate: RequestDelegate
     )
     {
         self.id = id
         self.underlyingQueue = underlyingQueue
         self.serializationQueue = serializationQueue
+        self.delegate = delegate
     }
     func task(for request: URLRequest, using session: URLSession) -> URLSessionTask{
         fatalError("반드시 서브클래싱해야됨")
@@ -173,12 +192,21 @@ public class DataRequest: Request{
         id: UUID = UUID(),
         convertible: URLRequestConvertible,
         underlyingQueue: DispatchQueue,
-        serializationQueue: DispatchQueue
+        serializationQueue: DispatchQueue,
+        delegate: RequestDelegate
     )
     {
         self.convertible = convertible
         
-        super.init(id: id, underlyingQueue: underlyingQueue, serializationQueue: serializationQueue)
+        super.init(id: id, underlyingQueue: underlyingQueue, serializationQueue: serializationQueue, delegate: delegate)
+    }
+    
+    func didReceive(data: Data){
+        if self.data == nil {
+            mutableData = data
+        } else {
+            $mutableData.write{ $0?.append(data)}
+        }
     }
     
     override func task(for request: URLRequest, using session: URLSession) -> URLSessionTask {
@@ -280,4 +308,16 @@ public protocol RequestDelegate: AnyObject {
     var startImmediately: Bool {get}
     //Request가 완료되었을 때, Request가 사용한 자원들을 해제하기 위한 역할을 수행한다.
     func cleanup(after request: Request)
+}
+
+extension Request: Equatable{
+    public static func == (lhs: Request, rhs: Request) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+extension Request: Hashable{
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }

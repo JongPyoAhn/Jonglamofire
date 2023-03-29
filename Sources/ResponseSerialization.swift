@@ -26,7 +26,7 @@ extension DataRequest {
                     result: result
                 )
                 //해당 serializer를 responseSerializerCompletions에 추가하고, processNextResponseSerializer()함수로 다음 serializer를 실행하는 역할 이런 방식으로 serializer를 차례대로 수행할 수 있음.
-                self.responseSerializerDidComplete { queue.async { completionHandler(response) } }
+                self.responseSerializerDidComplete { queue.async { completionHandler(response)} }
             }
         }
         return self
