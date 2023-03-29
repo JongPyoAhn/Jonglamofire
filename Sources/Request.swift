@@ -51,6 +51,16 @@ public class Request{
         var cURLHandler: (queue: DispatchQueue, handler: (String) -> Void)?
         //모든 URLSessionTask들을 저장
         var tasks: [URLSessionTask] = []
+        //response 파싱하는 Serialization response
+        var responseSerializers: [() -> Void] = []
+        //responseSerializer과정이 끝낫는지 아닌지를 확인하기 위한 프로퍼티
+        var responseSerializerProcessingFinished = false
+        //response Serialization 완료 시 실행되는 completion Closure. 모든 response Serialization이 완료된 후에 실행된다.
+        var responseSerializerCompletions: [() -> Void] = []
+        //DataRequest객체가 finish()메서드를 호출하여 요청이 완료되었는지 여부를 나타내는데 사용된다.
+        var isFinishing = false
+        //요청이 완료될 때 실행할 작업, 동시성 지원에 사용된다.
+        var finishHandlers: [() -> Void] = []
     }
     
     @Protected
@@ -97,6 +107,10 @@ public class Request{
     //underlyingQueue를 타겟으로하는 Serial Queue
     //직렬화 액션에 사용되는 큐
     public let serializationQueue: DispatchQueue
+    //외부에서 읽기만 가능하고 내부에서는 읽/쓰
+    //RequestDelegate: 객체의 요청 수행 중 다양한 이벤트와 상태변경을 감지하고 처리하기 위한 프로토콜
+    public private(set) weak var delegate:RequestDelegate?
+    
     
     init
     (
@@ -141,5 +155,84 @@ public class DataRequest: Request{
         let copiedRequest = request
         return session.dataTask(with: copiedRequest)
     }
-
+    //응답데이터를 처리 할 Serializer를 등록하는 역할
+    //Serializer: 응답데이터를 파싱하여 사용하기 적합한 형태로 변환해주는 객체
+    func appendResponseSerializer(_ closure: @escaping () -> Void){
+        $mutableState.write { mutableState in
+            mutableState.responseSerializers.append(closure)
+            
+            //DataRequest객체가 이전에 완료되었다가 다시 시작되는 경우를 처리
+            if mutableState.state == .finished {
+                mutableState.state = .resumed
+            }
+            
+            if mutableState.responseSerializerProcessingFinished{
+                underlyingQueue.async {
+                    
+                }
+            }
+            
+            
+        }
+    }
+    //DataRequest 객체에서 다음 response Serializer를 실행하는 역할
+    func processNextResponseSerializer() {
+        //다음에 실행할 Serializer가 있으면
+        guard let responseSerializer = nextResponseSerializer() else {
+            //다음에 실행할 Serializer가 없으면
+            //모든 response Serialization closure를 실행하고 삭제한다.
+            var completions: [() -> Void] = []
+            
+            $mutableState.write { mutableState in
+                completions = mutableState.responseSerializerCompletions
+                mutableState.responseSerializers.removeAll()
+                mutableState.responseSerializerCompletions.removeAll()
+                
+                if mutableState.state.canTransitionTo(.finished) {
+                    mutableState.state = .finished
+                }
+                
+                mutableState.responseSerializerProcessingFinished = true
+                mutableState.isFinishing = false
+            }
+            //mutableState에 responseSerializerCompletions를 모두 실행
+            completions.forEach{$0()}
+            
+            cleanup()
+            return
+        }
+        serializationQueue.async { responseSerializer() }
+    }
+    
+    
+    //DataRequest 객체에서 아직 처리되지 않은 다음 response Serializer를 반환하는 역할
+    func nextResponseSerializer() -> (() -> Void)? {
+        var responseSerializer: (() -> Void)?
+        
+        //responseSerializerCompletions가 완료된것들 저장하는 곳인데, responseSerializerIndex가 responseSerializers.count보다 작다는것은 아직 완료되지않은 Serializer가 있는것이므로 완료된것 다음번의것을 실행하는 의미의 구문
+        $mutableState.write { mutableState in
+            let responseSerializerIndex = mutableState.responseSerializerCompletions.count
+            if responseSerializerIndex < mutableState.responseSerializers.count{
+                responseSerializer = mutableState.responseSerializers[responseSerializerIndex]
+            }
+        }
+        return responseSerializer
+    }
+    
+    func cleanup(){
+        delegate?.cleanup(after: self)
+        let handlers = $mutableState.finishHandlers
+        //요청이 완료될때 실행할 작업을 실행
+        handlers.forEach{$0()}
+        $mutableState.write { mutableState in
+            mutableState.finishHandlers.removeAll()
+        }
+    }
+}
+//DataRequest 객체가 SessionDelegate 객체와 통신할 때 사용하는 프로토콜
+public protocol RequestDelegate: AnyObject {
+    //URLSessionTask을 구성하기 위한 configuration
+    var sessionConfiguration: URLSessionConfiguration {get}
+    //Request가 완료되었을 때, Request가 사용한 자원들을 해제하기 위한 역할을 수행한다.
+    func cleanup(after request: Request)
 }
