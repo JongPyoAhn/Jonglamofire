@@ -61,6 +61,8 @@ public class Request{
         var isFinishing = false
         //요청이 완료될 때 실행할 작업, 동시성 지원에 사용된다.
         var finishHandlers: [() -> Void] = []
+        //해당 Request에서 최종적으로 발생한 AFError를 의미.
+        var error: AFError?
     }
     
     @Protected
@@ -100,6 +102,30 @@ public class Request{
     }
   
     
+    //MARK: - URLRequest
+    //모든 URLRequest를 저장
+    public var requests: [URLRequest] {$mutableState.requests}
+    //Request를 실행할 때 생성된 첫번째 URLRequest, 처음실행되는거일필요X
+    public var firsetRequest: URLRequest? {requests.first}
+    //Request를 실행할 때 생성된 마지막 URLReuqest
+    public var lastRequest: URLRequest? {requests.last}
+    //Request를 실행할 때 생성된 현재 URLReuqest
+    public var request: URLRequest? {lastRequest}
+    
+    //MARK: - HTTPURLResponse
+    public var response: HTTPURLResponse? {lastTask?.response as? HTTPURLResponse}
+    
+    //MARK: - Tasks
+    //Request를 실행할 때 생성된 모든 URLSessionTask
+    public var tasks: [URLSessionTask] {$mutableState.tasks}
+    //Request를 실행할 때 생성된 첫번째 URLSessionTask
+    public var firstTask: URLSessionTask? {tasks.first}
+    //Request를 실행할 때 생성된 마지막 URLSessionTask
+    public var lastTask: URLSessionTask? {tasks.last}
+    //Request를 실행할 때 생성된 현재 URLSessionTask
+    public var task: URLSessionTask? {lastTask}
+    
+    //MARK: -
     //Request를 위한 unique identifier를 제공하는 UUID
     public let id: UUID
     //모든 내부의 비동기 액션들을 위한 Serial Queue
@@ -110,7 +136,11 @@ public class Request{
     //외부에서 읽기만 가능하고 내부에서는 읽/쓰
     //RequestDelegate: 객체의 요청 수행 중 다양한 이벤트와 상태변경을 감지하고 처리하기 위한 프로토콜
     public private(set) weak var delegate:RequestDelegate?
-    
+    //알라모파이어 내부에서 발생한 오류, 네트워크 요청에서 발생한 오류, 모든 유효성 validator에서 반환된 오류
+    public private(set) var error: AFError?{
+        get {$mutableState.error}
+        set {$mutableState.error = newValue}
+    }
     
     init
     (
@@ -222,6 +252,14 @@ public class DataRequest: Request{
             }
         }
         return responseSerializer
+    }
+    //responseSerializer가 완료되었을 때 호출된다.
+    //모든 serializer가 끝나기 전에, 다음 response Serializer가 실행되는 것을 방지할 수 있다.
+    func responseSerializerDidComplete(completion: @escaping () -> Void){
+        $mutableState.write { mutableState in
+            mutableState.responseSerializerCompletions.append(completion)
+        }
+        processNextResponseSerializer()
     }
     
     func cleanup(){
