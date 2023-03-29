@@ -165,13 +165,18 @@ public class DataRequest: Request{
             if mutableState.state == .finished {
                 mutableState.state = .resumed
             }
-            
+            //Serializer 처리가 끝낫다고 되있으면 다음 Serializer를 찾아봄.
             if mutableState.responseSerializerProcessingFinished{
                 underlyingQueue.async {
-                    
+                    self.processNextResponseSerializer()
                 }
             }
-            
+            //resume상태로 변경 가능하다는 것은 resume()이 가능하다는 것이다. 따라서 startImmediately를 확인하여 다른작업을 먼저할게 없다면 resume()
+            if mutableState.state.canTransitionTo(.resumed){
+                underlyingQueue.async {
+                    if self.delegate?.startImmediately == true {self.resume()}
+                }
+            }
             
         }
     }
@@ -233,6 +238,8 @@ public class DataRequest: Request{
 public protocol RequestDelegate: AnyObject {
     //URLSessionTask을 구성하기 위한 configuration
     var sessionConfiguration: URLSessionConfiguration {get}
+    //Request객체가 처음 response Handler를 추가할 때 자동으로 resume() 메소드를 호출해야하는지 여부를 결정한다. true이면, 요청객체가 만들어지는 즉시 서버로 전송된다.
+    var startImmediately: Bool {get}
     //Request가 완료되었을 때, Request가 사용한 자원들을 해제하기 위한 역할을 수행한다.
     func cleanup(after request: Request)
 }

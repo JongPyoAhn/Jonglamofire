@@ -8,5 +8,14 @@
 import Foundation
 
 extension DataRequest {
-
+    
+    @discardableResult
+    public func response(queue: DispatchQueue = .main, completionHandler: @escaping (AFDataResponse<Data?>) -> Void) -> Self{
+        appendResponseSerializer {
+            
+        }
+    }
+    
+    
+    
 }
