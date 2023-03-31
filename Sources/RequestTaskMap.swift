@@ -9,14 +9,20 @@ import Foundation
 //Session에서 실행중인 각 HTTP요청을 효율적으로 관리하고 제어한다.
 //이를 통해 여러 개의 요청을 동시에 처리할 수 있다.
 struct RequestTaskMap{
+    //completed: task가 완료되면 true로 설정
+    //metricsGathered: task의 측정항목이 수집되면 true로 설정
+    private typealias Events = (completed: Bool, metricsGathered: Bool)
     
     private var tasksToRequests: [URLSessionTask: Request]
     private var requestsToTasks: [Request: URLSessionTask]
+    private var taskEvents: [URLSessionTask: Events]
 
     init(tasksToRequests: [URLSessionTask : Request] = [:],
-         requestsToTasks: [Request : URLSessionTask] = [:]) {
+         requestsToTasks: [Request : URLSessionTask] = [:],
+         taskEvents: [URLSessionTask: (completed: Bool, metricsGathered: Bool)] = [:]) {
         self.tasksToRequests = tasksToRequests
         self.requestsToTasks = requestsToTasks
+        self.taskEvents = taskEvents
     }
     
     subscript(_ request: Request) -> URLSessionTask? {
@@ -29,11 +35,12 @@ struct RequestTaskMap{
                 
                 requestsToTasks.removeValue(forKey: request)
                 tasksToRequests.removeValue(forKey: task)
-                
+                taskEvents.removeValue(forKey: task)
                 return
             }
             requestsToTasks[request] = newValue
             tasksToRequests[newValue] = request
+            taskEvents[newValue] = (completed: false, metricsGathered: false)
         }
     }
     
@@ -46,10 +53,48 @@ struct RequestTaskMap{
                 }
                 tasksToRequests.removeValue(forKey: task)
                 requestsToTasks.removeValue(forKey: request)
+                taskEvents.removeValue(forKey: task)
+                
                 return
             }
             tasksToRequests[task] = newValue
             requestsToTasks[newValue] = task
+            taskEvents[task] = (completed: false, metricsGathered: false)
+        }
+    }
+    
+    mutating func disassociateIfNecessaryAfterGatheringMetricsForTask(_ task: URLSessionTask) -> Bool{
+        guard let events = taskEvents[task] else {
+            fatalError("RequestTaskMap consistency error: no events corresponding to task found.")
+        }
+        
+        switch (events.completed, events.metricsGathered){
+        case (_, true):
+            fatalError("RequestTaskMap consistency error: duplicate metricsGatheredForTask call.")
+        case (false, false):
+            taskEvents[task] = (completed: false, metricsGathered: true)
+            return false
+        case (true, false):
+            self[task] = nil
+            return true
+        }
+        
+    }
+    
+    
+    mutating func disassociateIfNecessaryAfterCompletingTask(_ task: URLSessionTask) -> Bool{
+        guard let events = taskEvents[task] else{
+            fatalError("RequestTaskMap consistency error: no events corresponding to task found.")
+        }
+        switch (events.completed, events.metricsGathered) {
+        case (true, _):
+            fatalError("RequestTaskMap consistency error: duplicate completionReceivedForTask call.")
+        case (false, false):
+            taskEvents[task] = (completed: true, metricsGathered: false)
+            return false
+        case (false, true):
+            self[task] = nil
+            return true
         }
     }
 }

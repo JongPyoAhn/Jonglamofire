@@ -17,6 +17,7 @@ open class Session{
     
     var requestTaskMap = RequestTaskMap()
     var activeRequests: Set<Request> = []
+    var waitingCompletions: [URLSessionTask: () -> Void] = [:]
     
     public init
     (
@@ -130,7 +131,6 @@ open class Session{
         dispatchPrecondition(condition: .onQueue(rootQueue))
         
         request.didCreateURLRequest(urlRequest)
-        
         let task = request.task(for: urlRequest, using: session)
         requestTaskMap[request] = task
         request.didCreateTask(task)
@@ -177,6 +177,29 @@ extension Session: SessionStateProvider{
         dispatchPrecondition(condition: .onQueue(rootQueue))
         
         return requestTaskMap[task]
+    }
+    
+    func didCompleteTask(_ task: URLSessionTask, completion: @escaping () -> Void) {
+        dispatchPrecondition(condition: .onQueue(rootQueue))
+        
+        let didDisassociate = requestTaskMap.disassociateIfNecessaryAfterCompletingTask(task)
+        
+        if didDisassociate{
+            completion()
+        }else {
+            waitingCompletions[task] = completion
+        }
+    }
+    
+    func didGatherMetricsForTask(_ task: URLSessionTask){
+        dispatchPrecondition(condition: .onQueue(rootQueue))
+        
+        let didDisassociate = requestTaskMap.disassociateIfNecessaryAfterGatheringMetricsForTask(task)
+        
+        if didDisassociate{
+            waitingCompletions[task]?()
+            waitingCompletions[task] = nil
+        }
     }
 
 }

@@ -54,7 +54,7 @@ public class Request{
         //response 파싱하는 Serialization response
         var responseSerializers: [() -> Void] = []
         //responseSerializer과정이 끝낫는지 아닌지를 확인하기 위한 프로퍼티
-        var responseSerializerProcessingFinished = true
+        var responseSerializerProcessingFinished = false
         //response Serialization 완료 시 실행되는 completion Closure. 모든 response Serialization이 완료된 후에 실행된다.
         var responseSerializerCompletions: [() -> Void] = []
         //DataRequest객체가 finish()메서드를 호출하여 요청이 완료되었는지 여부를 나타내는데 사용된다.
@@ -65,10 +65,18 @@ public class Request{
         var error: AFError?
         //Request가 URLSessionTask 만들 때 불리는 큐와 클로저
         var urlSessionTaskHandler: (queue: DispatchQueue, handler: (URLSessionTask) -> Void)?
+        var metrics: [URLSessionTaskMetrics] = []
     }
     
     @Protected
     fileprivate var mutableState = MuatbleState()
+    
+    public var state: State {$mutableState.state}
+    public var isInitialized: Bool {state == .initialized}
+    public var isResumed: Bool {state == .resumed}
+    public var isSuspended: Bool {state == .suspended}
+    public var isCancelled: Bool {state == .cancelled}
+    public var isFinished: Bool {state == .finished}
     
     func didCreadteInitialURLRequest(_ request: URLRequest){
         dispatchPrecondition(condition: .onQueue(underlyingQueue))
@@ -154,7 +162,7 @@ public class Request{
     //RequestDelegate: 객체의 요청 수행 중 다양한 이벤트와 상태변경을 감지하고 처리하기 위한 프로토콜
     public private(set) weak var delegate:RequestDelegate?
     //알라모파이어 내부에서 발생한 오류, 네트워크 요청에서 발생한 오류, 모든 유효성 validator에서 반환된 오류
-    public private(set) var error: AFError?{
+    public fileprivate(set) var error: AFError?{
         get {$mutableState.error}
         set {$mutableState.error = newValue}
     }
@@ -175,44 +183,40 @@ public class Request{
     func task(for request: URLRequest, using session: URLSession) -> URLSessionTask{
         fatalError("반드시 서브클래싱해야됨")
     }
-}
-
-//MARK: -
-public class DataRequest: Request{
-    public let convertible: URLRequestConvertible
-    //HTTP 요청에 대한 응답 데이터를 저장하는 데 사용됩니다.
-    public var data: Data? {mutableData}
     
-    //읽기 쓰기가 가능하고 thread-safe하게 접근가능한 mutableData
-    @Protected
-    private var mutableData: Data? = nil
+    func didCompleteTask(_ task: URLSessionTask, with error: AFError?){
+        dispatchPrecondition(condition: .onQueue(underlyingQueue))
+        self.error = self.error ?? error
+        retryOrFinish(error: self.error)
+    }
     
-    init
-    (
-        id: UUID = UUID(),
-        convertible: URLRequestConvertible,
-        underlyingQueue: DispatchQueue,
-        serializationQueue: DispatchQueue,
-        delegate: RequestDelegate
-    )
-    {
-        self.convertible = convertible
+    func didGatherMetrics(_ metrics: URLSessionTaskMetrics){
+        dispatchPrecondition(condition: .onQueue(underlyingQueue))
         
-        super.init(id: id, underlyingQueue: underlyingQueue, serializationQueue: serializationQueue, delegate: delegate)
+        $mutableState.write{$0.metrics.append(metrics)}
     }
     
-    func didReceive(data: Data){
-        if self.data == nil {
-            mutableData = data
-        } else {
-            $mutableData.write{ $0?.append(data)}
-        }
+    func retryOrFinish(error: AFError?){
+        dispatchPrecondition(condition: .onQueue(underlyingQueue))
+        //한가지 조건이라도 맞지 않는다면 finish()
+        
+        //취소되거나, 에러가 없거나, delegate가 없으면, finish()
+        guard !isCancelled, let error = error, let delegate = delegate else {finish(); return}
+        //취소되지않고 에러가있고, delegate가 있으면
+    }
+    //네트워크 요청이 완료될 때 호출되는 함수로, DataRequest객체의 완료처리를 수행한다.
+    func finish(error: AFError? = nil){
+        dispatchPrecondition(condition: .onQueue(underlyingQueue))
+        
+        guard !$mutableState.isFinishing else {return}
+        
+        $mutableState.isFinishing = true
+        
+        if let error = error {self.error = error}
+        
+        processNextResponseSerializer()
     }
     
-    override func task(for request: URLRequest, using session: URLSession) -> URLSessionTask {
-        let copiedRequest = request
-        return session.dataTask(with: copiedRequest)
-    }
     //응답데이터를 처리 할 Serializer를 등록하는 역할
     //Serializer: 응답데이터를 파싱하여 사용하기 적합한 형태로 변환해주는 객체
     func appendResponseSerializer(_ closure: @escaping () -> Void){
@@ -300,6 +304,45 @@ public class DataRequest: Request{
         }
     }
 }
+
+//MARK: -
+public class DataRequest: Request{
+    public let convertible: URLRequestConvertible
+    //HTTP 요청에 대한 응답 데이터를 저장하는 데 사용됩니다.
+    public var data: Data? {mutableData}
+    
+    //읽기 쓰기가 가능하고 thread-safe하게 접근가능한 mutableData
+    @Protected
+    private var mutableData: Data? = nil
+    
+    init
+    (
+        id: UUID = UUID(),
+        convertible: URLRequestConvertible,
+        underlyingQueue: DispatchQueue,
+        serializationQueue: DispatchQueue,
+        delegate: RequestDelegate
+    )
+    {
+        self.convertible = convertible
+        
+        super.init(id: id, underlyingQueue: underlyingQueue, serializationQueue: serializationQueue, delegate: delegate)
+    }
+    
+    func didReceive(data: Data){
+        if self.data == nil {
+            mutableData = data
+        } else {
+            $mutableData.write{ $0?.append(data)}
+        }
+    }
+    
+    override func task(for request: URLRequest, using session: URLSession) -> URLSessionTask {
+        let copiedRequest = request
+        return session.dataTask(with: copiedRequest)
+    }
+}
+
 //DataRequest 객체가 SessionDelegate 객체와 통신할 때 사용하는 프로토콜
 public protocol RequestDelegate: AnyObject {
     //URLSessionTask을 구성하기 위한 configuration
