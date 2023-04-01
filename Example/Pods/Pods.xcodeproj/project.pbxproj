@@ -59,7 +59,7 @@
 		2CD2EC682E2AE83714E744F2A4EBDE9F /* Pods-Jonglamofire_Tests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Jonglamofire_Tests"; path = Pods_Jonglamofire_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		30FBD1244987172E23DC6496DF156461 /* Pods-Jonglamofire_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Jonglamofire_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		313C9AFF37F77846B78F79E0901DD1C6 /* Jonglamofire-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Jonglamofire-prefix.pch"; sourceTree = "<group>"; };
-		392596E01A31235145EAF0C0AEF66518 /* Jonglamofire */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Jonglamofire; path = Jonglamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		392596E01A31235145EAF0C0AEF66518 /* Jonglamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Jonglamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C3925B1861AD56B4BFCA3D98E455F32 /* Pods-Jonglamofire_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Jonglamofire_Example-dummy.m"; sourceTree = "<group>"; };
 		3C5D6303352AF6CDB72568EF51E96233 /* Pods-Jonglamofire_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Jonglamofire_Example.modulemap"; sourceTree = "<group>"; };
 		3E339EEA1AA84594C58C156881F68D50 /* Pods-Jonglamofire_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Jonglamofire_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
@@ -152,7 +152,7 @@
 		108AFE39FB7571BF15BA6F844FC837F6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				392596E01A31235145EAF0C0AEF66518 /* Jonglamofire */,
+				392596E01A31235145EAF0C0AEF66518 /* Jonglamofire.framework */,
 				9824DF32CBCCE5EA1BADB61A7F0708D3 /* Pods-Jonglamofire_Example */,
 				2CD2EC682E2AE83714E744F2A4EBDE9F /* Pods-Jonglamofire_Tests */,
 			);
@@ -350,7 +350,7 @@
 			);
 			name = Jonglamofire;
 			productName = Jonglamofire;
-			productReference = 392596E01A31235145EAF0C0AEF66518 /* Jonglamofire */;
+			productReference = 392596E01A31235145EAF0C0AEF66518 /* Jonglamofire.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -606,7 +606,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Jonglamofire/Jonglamofire-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Jonglamofire/Jonglamofire-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/Jonglamofire/Jonglamofire.modulemap";
 				PRODUCT_MODULE_NAME = Jonglamofire;
@@ -670,7 +670,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Jonglamofire/Jonglamofire-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Jonglamofire/Jonglamofire-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/Jonglamofire/Jonglamofire.modulemap";
 				PRODUCT_MODULE_NAME = Jonglamofire;
