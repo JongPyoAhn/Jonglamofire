@@ -7,3 +7,4 @@ Jonglamofire는 인기있는 네트워킹 라이브러리인 Alamofire의 내부
 - **0.1.1:** 라이브러리 시험
 - **0.1.2:** 제한된 기능의 `request(_:)` 함수 분석 및 구현
 - **0.1.3:** `resume()` 함수 분석 및 구현 & `MutableState` 분석 및 구현 & `Protected` 분석 및 구현
+- **0.1.4:** `response()` 함수 분석 및 구현 & `SessionDelegate` 분석 및 구현 & `RequestTaskMap` 을 통한 Request와 Task 매핑
