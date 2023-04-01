@@ -202,7 +202,7 @@ public class Request{
         //한가지 조건이라도 맞지 않는다면 finish()
         
         //취소되거나, 에러가 없거나, delegate가 없으면, finish()
-        guard !isCancelled, let error = error, let delegate = delegate else {finish(); return}
+        guard !isCancelled, let _ = error, let _ = delegate else {finish(); return}
         //취소되지않고 에러가있고, delegate가 있으면
     }
     //네트워크 요청이 완료될 때 호출되는 함수로, DataRequest객체의 완료처리를 수행한다.
