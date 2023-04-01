@@ -17,6 +17,8 @@ open class Session{
     
     var requestTaskMap = RequestTaskMap()
     var activeRequests: Set<Request> = []
+    //URLSessionTask에 대한 CompletionHandler를 저장한다.
+    //RequestTaskMap에서 URLSessionTask의 completion 이벤트를 처리하기 전에 URLSessionTask에 대한 comletionHandler를 저장하는데 사용된다.
     var waitingCompletions: [URLSessionTask: () -> Void] = [:]
     
     public init
@@ -173,27 +175,34 @@ extension Session: RequestDelegate {
 
 //MARK: - SessionStateProvider
 extension Session: SessionStateProvider{
+    //task에 해당하는 Request객체를 찾아서 반환한다.
     func request(for task: URLSessionTask) -> Request? {
         dispatchPrecondition(condition: .onQueue(rootQueue))
         
         return requestTaskMap[task]
     }
     
+    //주어진 URLSessionTask 객체에 대한 처리가 완료되었음을 나타낸다.
     func didCompleteTask(_ task: URLSessionTask, completion: @escaping () -> Void) {
         dispatchPrecondition(condition: .onQueue(rootQueue))
-        
+        //task가 완료된 delegate시점에서 호출된것이라, metrics도 수집한 상태면 true리턴
         let didDisassociate = requestTaskMap.disassociateIfNecessaryAfterCompletingTask(task)
         
         if didDisassociate{
+            //모든것이 정상적으로 완료된 시점
             completion()
         }else {
+            //metrics가 아직 수집되지 않은시점(어떤경우지?)
             waitingCompletions[task] = completion
         }
     }
     
+    
     func didGatherMetricsForTask(_ task: URLSessionTask){
         dispatchPrecondition(condition: .onQueue(rootQueue))
         
+        //요청이 이미 완료되었으면 메모리에서 해제하기 위함이고, 이미 metrics를 수집했는데 또 수집한다면(?) fatalError
+        //둘다아니면 정상적으로 false를 받음
         let didDisassociate = requestTaskMap.disassociateIfNecessaryAfterGatheringMetricsForTask(task)
         
         if didDisassociate{

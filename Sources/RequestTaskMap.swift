@@ -64,17 +64,21 @@ struct RequestTaskMap{
     }
     
     mutating func disassociateIfNecessaryAfterGatheringMetricsForTask(_ task: URLSessionTask) -> Bool{
+        //URLRequest가 만들어졌을 때, didCreateURLRequest함수에서 request에 대한 taskEvents를 subscript의 set을 통해 설정해줌.
         guard let events = taskEvents[task] else {
             fatalError("RequestTaskMap consistency error: no events corresponding to task found.")
         }
-        
+
         switch (events.completed, events.metricsGathered){
         case (_, true):
             fatalError("RequestTaskMap consistency error: duplicate metricsGatheredForTask call.")
         case (false, false):
+            //해당 함수가 didFinishCollecting delegate가 호출될 때  사용되서 metricsGathered는 true가 된다.
             taskEvents[task] = (completed: false, metricsGathered: true)
             return false
         case (true, false):
+            //RequestTask가 완료되었을 때
+            //메모리에서 해제
             self[task] = nil
             return true
         }

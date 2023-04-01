@@ -190,6 +190,7 @@ public class Request{
         retryOrFinish(error: self.error)
     }
     
+    //metrics항목을 수집
     func didGatherMetrics(_ metrics: URLSessionTaskMetrics){
         dispatchPrecondition(condition: .onQueue(underlyingQueue))
         

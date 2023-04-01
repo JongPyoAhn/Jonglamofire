@@ -41,19 +41,23 @@ extension SessionDelegate: URLSessionDataDelegate{
 }
 
 extension SessionDelegate: URLSessionTaskDelegate{
-    //URLSessionTaskMetrics: URLSessionTask의 성능과 관련된 정보 제공하는 객체
-    //URLSessionTask와 관련된 측정항목 수집하고, 해당 정보를 처리하는 역할
+    //URLSessionTaskMetrics: URLSessionTask의 성능과 관련된 정보 제공하는 객체(URLSessionTask와 관련된 측정항목 수집하고, 해당 정보를 처리하는 역할)
+    //URLSessionTaskMetrics 객체가 수집되면 호출된다.
     open func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
-        
+        //현재 진행하는 task에 대한 Request객체가 있으면 현재 metrics를 mutableState에 수집한다.
         stateProvider?.request(for: task)?.didGatherMetrics(metrics)
         
         stateProvider?.didGatherMetricsForTask(task)
     }
+    //URLSessionTask가 완료될 때 호출
     open func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         
+        //현재 진행하는 task에 대한 Request객체
         let request = stateProvider?.request(for: task)
         
+        //주어진 URLSessionTask에 대한 완료
         stateProvider?.didCompleteTask(task) {
+            //성공적으로 완료되면 바로실행
             request?.didCompleteTask(task, with: error as? AFError)
         }
     }
